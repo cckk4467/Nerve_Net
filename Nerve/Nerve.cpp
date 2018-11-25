@@ -2,6 +2,7 @@
 #include<vector>
 #include<random>
 #include<windows.h>
+#include<algorithm>
 #include<cmath>
 #include <omp.h>
 using namespace std;
@@ -31,7 +32,7 @@ namespace Nerve
 				neurons.push_back(Neuron());
 				
 			default_random_engine e(GetTickCount());/*初始化随机引擎*/
-			uniform_real_distribution<double> u(-1.0,1.0);
+			uniform_real_distribution<double> u(0.0,1.0);
 
 			int m = pre.neurons.size();
 			for (int i = 0; i < neurons.size(); i++)
@@ -111,6 +112,9 @@ namespace Nerve
 
 		void Learn()													//反向传播！(BP)
 		{
+			//清空d_H
+			fill(d_H[0].begin(), d_H[0].end(), 0.0);
+			fill(d_H[1].begin(), d_H[1].end(), 0.0);
 			//对于保存δH、δw的数据结构，这里我选择重复利用容器节省时间，所以要分情况讨论
 
 			for (int i = 0; i < layers.back().neurons.size(); i++)//先求出输出层的δH
@@ -128,8 +132,8 @@ namespace Nerve
 
 						d_H[bjH ^ 1][k] += Figue_d_H(L, j, k);
 					}
-				}
 
+				}
 				for (int j = 0; j < layers[L].neurons.size(); j++)//循环L每一个神经元
 				{
 					for (int k = 0; k < layers[L - 1].neurons.size(); k++)//循环L-1每一个神经元
@@ -145,7 +149,10 @@ namespace Nerve
 		}
 		//========================================================Math=========================================================
 
-		double sigmoid(double x) { return 1 / (1 + exp(-x)); };
+		double sigmoid(double x) 
+		{ 
+			return 1 / (1 + exp(-x)); 
+		}
 		//double sigmoid_d(double) {return sigmoid(x)(1-sigmoid(x))};
 
 		double C()														//咕价函数~
@@ -197,14 +204,13 @@ using namespace Nerve;
 
 int main()
 {
-	Nerve_net net(2, 2, vector<int>{50});
-
-	int o = 1000;
+	Nerve_net net(2, 2, vector<int>{5,4});
+	
+	int o = 10000;
 	while (o--)
 	{
-
-		net.Input(vector<double>{0, 1});
-		net.Set_Desired_output(vector<double>{1, 0});
+		net.Input(vector<double>{0,1});
+		net.Set_Desired_output(vector<double>{1,0});
 		net.Figue();
 		net.Learn();
 
@@ -212,10 +218,9 @@ int main()
 		net.Set_Desired_output(vector<double>{0, 1});
 		net.Figue();
 		net.Learn();
-
 	}
 	//教会它识别01
-	net.Input(vector<double>{0.3, 0.5});
+	net.Input(vector<double>{0,1});
 	net.Figue();
 	vector<double> oo = net.Output();
 	for (int i = 0; i < oo.size(); i++)
