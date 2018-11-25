@@ -111,7 +111,7 @@ namespace Nerve
 			return out;
 		}
 
-		void Learn()													//反向传播！(BP)
+		void Train()													//反向传播！(BP)
 		{
 			//对于保存δH、δw的数据结构，这里我选择重复利用容器节省时间，所以要分情况讨论
 
@@ -194,9 +194,9 @@ namespace Nerve
 	private:
 		vector<Layer>			layers;
 		vector<double>			desired_ouput;
-		double					learning_rate = 0.5;
+		double					learning_rate = 0.2;
 
-		vector<double>			d_H[2];	//Learn过程中处理层和将处理层的偏导δH
+		vector<double>			d_H[2];	//Train过程中处理层和将处理层的偏导δH
 		short					bjH = 0;//标记当前d_H使用的是哪一个
 		vector<vector<double>>	d_Wjk;	//learn过程处理层的所有权值偏导
 	};
@@ -205,58 +205,54 @@ using namespace Nerve;
 
 int main()
 {
-	Nerve_net net(4, 4, vector<int>{6,6});
+	Nerve_net net(4, 3, vector<int>{6,6});
 	
-	int o = 66666666;
-	thread t([&]() {
-		int i = 0;
-		while (1)
-		{
-			system("pause");
-			vector<double> p[4] = { { 1,0,0,0 },{ 0,1,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
-			net.Input(p[(i++)%4]);
-			net.Figue();
-			vector<double> ooo = net.Output();
-			for (int i = 0; i < ooo.size(); i++)
-				std::cout << ooo[i] << " ";
-		}
-	});
+	int o = 30000;
+	default_random_engine e(GetTickCount());/*初始化随机引擎*/
+	uniform_int_distribution<int> u(0,2);
 	while (o--)
 	{
-		net.Input(vector<double>{0, 0, 0, 1});
-		net.Set_Desired_output(vector<double>{0,0,0,1});
-		net.Figue();
-		net.Learn();
-		if (o % 23333 == 233)std::cout << net.C() << endl;
+		if (u(e) == 0)
+		{
+			net.Input(vector<double>{1, 1, 0, 0});
+			net.Set_Desired_output(vector<double>{1, 0, 0});
+			net.Figue();
+			net.Train();
+			if (o % 23333 == 233)std::cout << net.C() << endl;
+		}
+		else if (u(e) == 1)
+		{
+			net.Input(vector<double>{0, 1, 1, 0});
+			net.Set_Desired_output(vector<double>{0, 1, 0});
+			net.Figue();
+			net.Train();
+			if (o % 23333 == 233)std::cout << net.C() << endl;
+		}
+		else
+		{
+			net.Input(vector<double>{0, 0, 1, 1});
+			net.Set_Desired_output(vector<double>{0, 0, 1});
+			net.Figue();
+			net.Train();
+			if (o % 23333 == 233)std::cout << net.C() << endl;
+		}
 
-		net.Input(vector<double>{0, 0, 1, 0});
-		net.Set_Desired_output(vector<double>{0, 0, 1, 0});
+		net.Input(vector<double>{1, 1, 1, 1});
+		net.Set_Desired_output(vector<double>{1, 1, 1});
 		net.Figue();
-		net.Learn();
-		if (o % 23333 == 233)std::cout << net.C() << endl;
-
-		net.Input(vector<double>{0, 1, 0, 0});
-		net.Set_Desired_output(vector<double>{0, 1, 0, 0});
-		net.Figue();
-		net.Learn();
-		if (o % 23333 == 233)std::cout << net.C() << endl;
-
-		net.Input(vector<double>{1, 0, 0, 0});
-		net.Set_Desired_output(vector<double>{1, 0, 0, 0});
-		net.Figue();
-		net.Learn();
+		//net.Train();
 
 		if (o % 23333 == 233)std::cout << net.C() << endl << endl;
 		//system("cls");
 	}
 	//教会它识别01
-	net.Input(vector<double>{0,0,0,1});
+	net.Input(vector<double>{1,0.5,0,0.1});
 	net.Figue();
 	vector<double> oo = net.Output();
 	for (int i = 0; i < oo.size(); i++)
 		std::cout << oo[i] << " ";
 	std::cout << endl;
-	net.Input(vector<double>{1,0,0,0});
+	net.Input(vector<double>{0,0.55,1,0.35});
 	net.Figue();
 	vector<double> ooo = net.Output();
 	for (int i = 0; i < ooo.size(); i++)

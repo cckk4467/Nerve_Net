@@ -15,13 +15,12 @@ Nerve.cpp(137): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(139): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(164): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(175): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(220): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(256): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(262): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(252): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(258): warning C4018: “<”: 有符号/无符号不匹配
   正在生成代码
-  1 of 524 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  1 of 473 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    3 functions had inline decision re-evaluated but remain unchanged
+    0 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   Nerve.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\Release\Nerve.exe
   Nerve.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\Release\Nerve.pdb (Full PDB)
