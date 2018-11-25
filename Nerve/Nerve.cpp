@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<cmath>
 #include <omp.h>
+#include <thread>
 using namespace std;
 
 namespace Nerve
@@ -102,7 +103,7 @@ namespace Nerve
 			}
 		}
 
-		vector<double> Output()											//返回输出层信息
+		vector<double> Output() const									//返回输出层信息
 		{
 			vector<double> out;
 			for (int i = 0; i < layers.back().neurons.size(); i++)
@@ -112,9 +113,6 @@ namespace Nerve
 
 		void Learn()													//反向传播！(BP)
 		{
-			//清空d_H
-			fill(d_H[0].begin(), d_H[0].end(), 0.0);
-			fill(d_H[1].begin(), d_H[1].end(), 0.0);
 			//对于保存δH、δw的数据结构，这里我选择重复利用容器节省时间，所以要分情况讨论
 
 			for (int i = 0; i < layers.back().neurons.size(); i++)//先求出输出层的δH
@@ -123,6 +121,8 @@ namespace Nerve
 			}
 			for (int L = layers.size() - 1; L > 0; L--)//循环层，L层即当前处理层
 			{
+				//清空d_H
+				fill(d_H[bjH ^ 1].begin(), d_H[bjH ^ 1].end(), 0.0);
 #pragma omp parallel for//一步加速
 				for (int k = 0; k < layers[L - 1].neurons.size(); k++)//循环L-1每一个神经元
 				{
@@ -144,6 +144,7 @@ namespace Nerve
 					//更新L层的P(由公式可推知δPj=δHj，所以就可以很好偷懒)
 					layers[L].neurons[j].p -= learning_rate * d_H[bjH][j];
 				}
+				
 				bjH ^= 1;
 			}
 		}
@@ -155,7 +156,7 @@ namespace Nerve
 		}
 		//double sigmoid_d(double) {return sigmoid(x)(1-sigmoid(x))};
 
-		double C()														//咕价函数~
+		double C() const													//咕价函数~
 		{
 			int last = layers.size()-1;
 
@@ -204,25 +205,60 @@ using namespace Nerve;
 
 int main()
 {
-	Nerve_net net(2, 2, vector<int>{5,4});
+	Nerve_net net(4, 4, vector<int>{6,6});
 	
-	int o = 10000;
+	int o = 66666666;
+	thread t([&]() {
+		int i = 0;
+		while (1)
+		{
+			system("pause");
+			vector<double> p[4] = { { 1,0,0,0 },{ 0,1,0,0 },{ 0,0,1,0 },{ 0,0,0,1 } };
+			net.Input(p[(i++)%4]);
+			net.Figue();
+			vector<double> ooo = net.Output();
+			for (int i = 0; i < ooo.size(); i++)
+				std::cout << ooo[i] << " ";
+		}
+	});
 	while (o--)
 	{
-		net.Input(vector<double>{0,1});
-		net.Set_Desired_output(vector<double>{1,0});
+		net.Input(vector<double>{0, 0, 0, 1});
+		net.Set_Desired_output(vector<double>{0,0,0,1});
+		net.Figue();
+		net.Learn();
+		if (o % 23333 == 233)std::cout << net.C() << endl;
+
+		net.Input(vector<double>{0, 0, 1, 0});
+		net.Set_Desired_output(vector<double>{0, 0, 1, 0});
+		net.Figue();
+		net.Learn();
+		if (o % 23333 == 233)std::cout << net.C() << endl;
+
+		net.Input(vector<double>{0, 1, 0, 0});
+		net.Set_Desired_output(vector<double>{0, 1, 0, 0});
+		net.Figue();
+		net.Learn();
+		if (o % 23333 == 233)std::cout << net.C() << endl;
+
+		net.Input(vector<double>{1, 0, 0, 0});
+		net.Set_Desired_output(vector<double>{1, 0, 0, 0});
 		net.Figue();
 		net.Learn();
 
-		net.Input(vector<double>{1, 0});
-		net.Set_Desired_output(vector<double>{0, 1});
-		net.Figue();
-		net.Learn();
+		if (o % 23333 == 233)std::cout << net.C() << endl << endl;
+		//system("cls");
 	}
 	//教会它识别01
-	net.Input(vector<double>{0,1});
+	net.Input(vector<double>{0,0,0,1});
 	net.Figue();
 	vector<double> oo = net.Output();
 	for (int i = 0; i < oo.size(); i++)
-		cout << oo[i] << " ";
+		std::cout << oo[i] << " ";
+	std::cout << endl;
+	net.Input(vector<double>{1,0,0,0});
+	net.Figue();
+	vector<double> ooo = net.Output();
+	for (int i = 0; i < ooo.size(); i++)
+		std::cout << ooo[i] << " ";
 }

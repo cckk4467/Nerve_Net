@@ -1,25 +1,27 @@
 ﻿  Nerve.cpp
-Nerve.cpp(38): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(61): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(74): warning C4305: “return”: 从“int”到“bool”截断
-Nerve.cpp(76): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(84): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(86): warning C4018: “<=”: 有符号/无符号不匹配
-Nerve.cpp(95): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(98): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(108): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(120): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(39): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(62): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(75): warning C4305: “return”: 从“int”到“bool”截断
+Nerve.cpp(77): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(85): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(87): warning C4018: “<=”: 有符号/无符号不匹配
+Nerve.cpp(96): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(99): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(109): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(118): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(127): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(129): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(137): warning C4018: “<”: 有符号/无符号不匹配
 Nerve.cpp(139): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(163): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(174): warning C4018: “<”: 有符号/无符号不匹配
-Nerve.cpp(226): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(164): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(175): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(220): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(256): warning C4018: “<”: 有符号/无符号不匹配
+Nerve.cpp(262): warning C4018: “<”: 有符号/无符号不匹配
   正在生成代码
-  1 of 452 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
+  1 of 524 functions ( 0.2%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    3 functions had inline decision re-evaluated but remain unchanged
   已完成代码的生成
   Nerve.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\Release\Nerve.exe
   Nerve.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\Release\Nerve.pdb (Full PDB)
