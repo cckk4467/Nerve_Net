@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*.gz
 Nerve.VC.db
 /Debug/
 /Release/

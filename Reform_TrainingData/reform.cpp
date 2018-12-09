@@ -21,7 +21,7 @@ struct Data
 class Builder
 {
 public:
-	Builder(char *file, char *file2):in(file),ans_in(file2)
+	Builder(char *file, char *file2):in(file, ios::binary),ans_in(file2, ios::binary)
 	{
 		int		a = 0;
 		char	p[28 * 28], ans;
@@ -56,10 +56,10 @@ public:
 			}
 		}
 	}
-	void export(char *k)
+	void Export(char *k)
 	{
 		if (out.is_open())out.close();
-		out.open(k);
+		out.open(k, ios::binary);
 
 		bool end = false;
 		int count = 0;

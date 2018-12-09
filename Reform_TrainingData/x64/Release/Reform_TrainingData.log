@@ -1,0 +1,4 @@
+﻿  reform.cpp
+reform.cpp(54): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+MSVCRT.lib(exe_main.obj) : error LNK2001: 无法解析的外部符号 main
+E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Release\Reform_TrainingData.exe : fatal error LNK1120: 1 个无法解析的外部命令

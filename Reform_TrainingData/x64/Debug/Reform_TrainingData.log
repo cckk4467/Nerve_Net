@@ -1,3 +1,2 @@
-﻿  reform.cpp
-MSVCRTD.lib(exe_main.obj) : error LNK2019: 无法解析的外部符号 main，该符号在函数 "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 中被引用
+﻿MSVCRTD.lib(exe_main.obj) : error LNK2019: 无法解析的外部符号 main，该符号在函数 "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 中被引用
 E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Debug\Reform_TrainingData.exe : fatal error LNK1120: 1 个无法解析的外部命令

@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include<vector>
 #include<random>
 #include<windows.h>
@@ -68,6 +69,76 @@ namespace Nerve
 			d_H[1].resize(_max);
 			d_Wjk.resize(_max, vector<double>(_max));
 			layers.push_back(Layer(m, layers.back()));
+		}
+
+		//为了方便测试，我增加了保存神经网络到文件的操作
+		Nerve_net(char *file)
+		{
+			int n, m;
+			ifstream in(file, ios::binary);
+			in.read((char*)&n, 4);		//1~4 byte 网络隐藏层数
+
+			in.read((char*)&m, 4);		//5~8 byte 输入层神经元数目
+			int _max = m;				//求最厚层
+			layers.push_back(Layer(m));
+
+			for (int i = 0; i < n; i++)	//9~(n*4-1) byte 每层神经元数目
+			{
+				in.read((char*)&m, 4);
+				layers.push_back(Layer(m, layers.back()));
+				_max = max(m, _max);
+			}
+			in.read((char*)&m, 4);		//xxx byte 输出层神经元数目
+			layers.push_back(Layer(m, layers.back()));
+			_max = max(m, _max);
+
+			d_H[0].resize(_max);
+			d_H[1].resize(_max);
+			d_Wjk.resize(_max, vector<double>(_max));
+			
+			double data;
+			for (int i = 1; i < layers.size(); i++)
+			{
+				for (int j = 0; j < layers[i].neurons.size(); j++)
+				{
+					in.read((char*)&data, sizeof(double));
+					layers[i].neurons[j].p = data;
+					for (int k = 0; k < layers[i - 1].neurons.size(); k++)
+					{
+						in.read((char*)&data, sizeof(double));
+						int u = in.gcount();
+						layers[i].neurons[j].w[k] = data;
+					}
+				}
+			}
+			in.read((char*)&learning_rate, sizeof(double));
+			in.close();
+		}
+		void SaveTofile(char *file)
+		{
+			ofstream out(file, ios::binary);						//保存结构信息
+			int n = layers.size() - 2;
+			int a = 0;
+			out.write((char*)&n, 4);
+			for (int i = 0; i < layers.size(); i++)
+			{
+				a = layers[i].neurons.size();
+				out.write((char*)&a, 4);
+			}
+
+			for (int i = 1; i < layers.size(); i++)	//保存偏置、边权
+			{
+				for (int j = 0; j < layers[i].neurons.size(); j++)
+				{
+					out.write((char*)&layers[i].neurons[j].p, sizeof(double));
+					for (int k = 0; k < layers[i - 1].neurons.size(); k++)
+					{
+						out.write((char*)&layers[i].neurons[j].w[k], sizeof(double));
+					}
+				}
+			}
+			out.write((char*)&learning_rate, sizeof(double));
+			out.close();
 		}
 
 		bool Input(const vector<double> inp)							//向网络输入信息.
@@ -205,7 +276,8 @@ using namespace Nerve;
 
 int main()
 {
-	Nerve_net net(4, 3, vector<int>{6,6});
+	//Nerve_net net(4, 3, vector<int>{3,4});
+	Nerve_net net("a.nerve");//从文件读入
 	
 	int o = 30000;
 	default_random_engine e(GetTickCount());/*初始化随机引擎*/
@@ -218,7 +290,6 @@ int main()
 			net.Set_Desired_output(vector<double>{1, 0, 0});
 			net.Figue();
 			net.Train();
-			if (o % 23333 == 233)std::cout << net.C() << endl;
 		}
 		else if (u(e) == 1)
 		{
@@ -226,7 +297,6 @@ int main()
 			net.Set_Desired_output(vector<double>{0, 1, 0});
 			net.Figue();
 			net.Train();
-			if (o % 23333 == 233)std::cout << net.C() << endl;
 		}
 		else
 		{
@@ -234,27 +304,26 @@ int main()
 			net.Set_Desired_output(vector<double>{0, 0, 1});
 			net.Figue();
 			net.Train();
-			if (o % 23333 == 233)std::cout << net.C() << endl;
 		}
 
 		net.Input(vector<double>{1, 1, 1, 1});
 		net.Set_Desired_output(vector<double>{1, 1, 1});
 		net.Figue();
-		//net.Train();
+		net.Train();
 
-		if (o % 23333 == 233)std::cout << net.C() << endl << endl;
-		//system("cls");
 	}
 	//教会它识别01
-	net.Input(vector<double>{1,0.5,0,0.1});
+	net.Input(vector<double>{1,0.5,0,0.0});
 	net.Figue();
 	vector<double> oo = net.Output();
 	for (int i = 0; i < oo.size(); i++)
 		std::cout << oo[i] << " ";
 	std::cout << endl;
-	net.Input(vector<double>{0,0.55,1,0.35});
+	net.Input(vector<double>{0,0.60,1.0,0.00});
 	net.Figue();
 	vector<double> ooo = net.Output();
 	for (int i = 0; i < ooo.size(); i++)
 		std::cout << ooo[i] << " ";
+
+	//net.SaveTofile("a.nerve");//保存到文件
 }
