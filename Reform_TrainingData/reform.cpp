@@ -27,8 +27,8 @@ public:
 		char	p[28 * 28], ans;
 		in.read((char*)&a, 4);		ans_in.read((char*)&a, 4);
 		in.read((char*)&number, 4);	ans_in.read((char*)&a, 4);
-		in.read((char*)&a, 4);		ans_in.read((char*)&a, 4);
-		in.read((char*)&a, 4);		ans_in.read((char*)&a, 4);
+		in.read((char*)&a, 4);
+		in.read((char*)&a, 4);
 		trans(number);
 
 		for (int i = 0; i < number; i++)
