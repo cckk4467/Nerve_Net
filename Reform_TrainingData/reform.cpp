@@ -67,9 +67,11 @@ public:
 		{
 			for (int i = 0; i < 10; i++)
 			{
+                end=true;
 				if(count<data[i].size())
-					out.write((char*)&data[i][count], sizeof(Data));
+					out.write((char*)&data[i][count], sizeof(Data)),end=false;
 			}
+			count++;
 		}
 	}
 private:
