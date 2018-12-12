@@ -91,3 +91,10 @@ private:
 		((char*)&n)[3] = ((char*)&a)[0];
 	}
 };
+int main()
+{
+    Builder r("train-images.idx3-ubyte","train-labels.idx1-ubyte");
+    r.wan();
+    r.Export("export.txt");
+    return 0;
+}
