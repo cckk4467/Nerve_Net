@@ -30,7 +30,12 @@
 *.exe
 *.out
 *.app
+
+*.train
+*.exam
 *.gz
+*.idx3-ubyte
+*.idx1-ubyte
 Nerve.VC.db
 /Debug/
 /Release/
