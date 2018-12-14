@@ -63,16 +63,20 @@ public:
 
 		bool end = false;
 		int count = 0;
+		int lis[10] = { 0,1,2,3,4,5,6,7,8,9 };
 		while (!end)
 		{
+			for (int i = 0; i<10; i++)//Ëæ»ú1-9µÄÊä³öË³Ğò 
+				swap(lis[i], lis[rand() % 10]);
+			end = true;
 			for (int i = 0; i < 10; i++)
 			{
-                end=true;
-				if(count<data[i].size())
-					out.write((char*)&data[i][count], sizeof(Data)),end=false;
+				if (count<data[lis[i]].size())
+					out.write((char*)&data[lis[i]][count], sizeof(Data)), end = false;
 			}
 			count++;
 		}
+		out.close();
 	}
 private:
 	ifstream	in;
@@ -93,8 +97,8 @@ private:
 };
 int main()
 {
-    Builder r("train-images.idx3-ubyte","train-labels.idx1-ubyte");
+    Builder r("t10k-images.idx3-ubyte","t10k-labels.idx1-ubyte");
     r.wan();
-    r.Export("export.txt");
+    r.Export("export.exam");
     return 0;
 }

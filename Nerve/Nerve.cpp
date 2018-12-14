@@ -274,56 +274,56 @@ namespace Nerve
 }
 using namespace Nerve;
 
-int main()
-{
-	//Nerve_net net(4, 3, vector<int>{3,4});
-	Nerve_net net("a.nerve");//从文件读入
-	
-	int o = 30000;
-	default_random_engine e(GetTickCount());/*初始化随机引擎*/
-	uniform_int_distribution<int> u(0,2);
-	while (o--)
-	{
-		if (u(e) == 0)
-		{
-			net.Input(vector<double>{1, 1, 0, 0});
-			net.Set_Desired_output(vector<double>{1, 0, 0});
-			net.Figue();
-			net.Train();
-		}
-		else if (u(e) == 1)
-		{
-			net.Input(vector<double>{0, 1, 1, 0});
-			net.Set_Desired_output(vector<double>{0, 1, 0});
-			net.Figue();
-			net.Train();
-		}
-		else
-		{
-			net.Input(vector<double>{0, 0, 1, 1});
-			net.Set_Desired_output(vector<double>{0, 0, 1});
-			net.Figue();
-			net.Train();
-		}
-
-		net.Input(vector<double>{1, 1, 1, 1});
-		net.Set_Desired_output(vector<double>{1, 1, 1});
-		net.Figue();
-		net.Train();
-
-	}
-	//教会它识别01
-	net.Input(vector<double>{1,0.5,0,0.0});
-	net.Figue();
-	vector<double> oo = net.Output();
-	for (int i = 0; i < oo.size(); i++)
-		std::cout << oo[i] << " ";
-	std::cout << endl;
-	net.Input(vector<double>{0,0.60,1.0,0.00});
-	net.Figue();
-	vector<double> ooo = net.Output();
-	for (int i = 0; i < ooo.size(); i++)
-		std::cout << ooo[i] << " ";
-
-	//net.SaveTofile("a.nerve");//保存到文件
-}
+//int main()
+//{
+//	//Nerve_net net(4, 3, vector<int>{3,4});
+//	Nerve_net net("a.nerve");//从文件读入
+//	
+//	int o = 30000;
+//	default_random_engine e(GetTickCount());/*初始化随机引擎*/
+//	uniform_int_distribution<int> u(0,2);
+//	while (o--)
+//	{
+//		if (u(e) == 0)
+//		{
+//			net.Input(vector<double>{1, 1, 0, 0});
+//			net.Set_Desired_output(vector<double>{1, 0, 0});
+//			net.Figue();
+//			net.Train();
+//		}
+//		else if (u(e) == 1)
+//		{
+//			net.Input(vector<double>{0, 1, 1, 0});
+//			net.Set_Desired_output(vector<double>{0, 1, 0});
+//			net.Figue();
+//			net.Train();
+//		}
+//		else
+//		{
+//			net.Input(vector<double>{0, 0, 1, 1});
+//			net.Set_Desired_output(vector<double>{0, 0, 1});
+//			net.Figue();
+//			net.Train();
+//		}
+//
+//		net.Input(vector<double>{1, 1, 1, 1});
+//		net.Set_Desired_output(vector<double>{1, 1, 1});
+//		net.Figue();
+//		net.Train();
+//
+//	}
+//	//教会它识别01
+//	net.Input(vector<double>{1,0.5,0,0.0});
+//	net.Figue();
+//	vector<double> oo = net.Output();
+//	for (int i = 0; i < oo.size(); i++)
+//		std::cout << oo[i] << " ";
+//	std::cout << endl;
+//	net.Input(vector<double>{0,0.60,1.0,0.00});
+//	net.Figue();
+//	vector<double> ooo = net.Output();
+//	for (int i = 0; i < ooo.size(); i++)
+//		std::cout << ooo[i] << " ";
+//
+//	//net.SaveTofile("a.nerve");//保存到文件
+//}

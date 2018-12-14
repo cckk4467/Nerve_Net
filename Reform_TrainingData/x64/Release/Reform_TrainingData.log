@@ -1,4 +1,9 @@
 ﻿  reform.cpp
 reform.cpp(54): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
-MSVCRT.lib(exe_main.obj) : error LNK2001: 无法解析的外部符号 main
-E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Release\Reform_TrainingData.exe : fatal error LNK1120: 1 个无法解析的外部命令
+  正在生成代码
+  4 of 236 functions ( 1.7%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    4 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  Reform_TrainingData.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Release\Reform_TrainingData.exe
+  Reform_TrainingData.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Release\Reform_TrainingData.pdb (Full PDB)
