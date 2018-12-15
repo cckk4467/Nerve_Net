@@ -1,4 +1,4 @@
-﻿  Nerve.cpp
+﻿  Train.cpp
 e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(39): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
 e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(113): warning C4244: “初始化”: 从“std::streamsize”转换到“int”，可能丢失数据
 e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(124): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
@@ -8,5 +8,5 @@ e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(212): warnin
 e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(237): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
 e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(261): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
 e:\我的 东东\easyx学习\深度学习\nerve_net\nerve\nerve.cpp(167): warning C4715: “Nerve::Nerve_net::Set_Desired_output”: 不是所有的控件路径都返回值
-  Nerve.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Debug\Nerve.exe
-  Nerve.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Debug\Nerve.pdb (Full PDB)
+  Train.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Debug\Train.exe
+  Train.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Debug\Train.pdb (Full PDB)

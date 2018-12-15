@@ -1,0 +1,16 @@
+﻿  Train.cpp
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(39): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(113): warning C4244: “初始化”: 从“std::streamsize”转换到“int”，可能丢失数据
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(124): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(129): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(150): warning C4305: “return”: 从“int”到“bool”截断
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(212): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(237): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+e:\我的 东东\easyx学习\深度学习\nerve_net\train\..//Nerve//Nerve.cpp(261): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  正在生成代码
+  3 of 665 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    1 functions had inline decision re-evaluated but remain unchanged
+  已完成代码的生成
+  Train.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Release\Train.exe
+  Train.vcxproj -> E:\我的 东东\EasyX学习\深度学习\Nerve_Net\x64\Release\Train.pdb (Full PDB)

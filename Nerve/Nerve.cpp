@@ -67,8 +67,10 @@ namespace Nerve
 			}
 			d_H[0].resize(_max);
 			d_H[1].resize(_max);
-			d_Wjk.resize(_max, vector<double>(_max));
 			layers.push_back(Layer(m, layers.back()));
+			for (int i = 0; i < layers.size(); i++)
+				d_Wjk.push_back(vector<vector<double>>(_max, vector<double>(_max, 0.0)));
+			d_P.resize(layers.size(), vector<double>(_max, 0.0));
 		}
 
 		//为了方便测试，我增加了保存神经网络到文件的操作
@@ -94,7 +96,9 @@ namespace Nerve
 
 			d_H[0].resize(_max);
 			d_H[1].resize(_max);
-			d_Wjk.resize(_max, vector<double>(_max));
+			for (int i = 0; i < layers.size(); i++)
+				d_Wjk.push_back(vector<vector<double>>(_max, vector<double>(_max, 0.0)));
+			d_P.resize(layers.size(), vector<double>(_max, 0.0));
 			
 			double data;
 			for (int i = 1; i < layers.size(); i++)
@@ -182,8 +186,23 @@ namespace Nerve
 			return out;
 		}
 
-		void Train()													//反向传播！(BP)
+		void Began_training()
 		{
+			if (if_training)Send_error("is training");
+			samples = 0;
+			for (int i = 1; i < layers.size(); i++)
+				for (int j = 0; j < layers[i].neurons.size(); j++)
+					for (int k = 0; k < layers[i - 1].neurons.size(); k++)
+						d_Wjk[i][j][k] = 0.0;
+
+			for (int i = 1; i < layers.size(); i++)
+				for (int j = 0; j < layers[i].neurons.size(); j++)
+					d_P[i][j] = 0.0;
+			if_training = true;
+		}
+		void Learn()													//反向传播！(BP)
+		{
+			if (!if_training)Send_error("is no training");
 			//对于保存δH、δw的数据结构，这里我选择重复利用容器节省时间，所以要分情况讨论
 
 			for (int i = 0; i < layers.back().neurons.size(); i++)//先求出输出层的δH
@@ -195,28 +214,38 @@ namespace Nerve
 				//清空d_H
 				fill(d_H[bjH ^ 1].begin(), d_H[bjH ^ 1].end(), 0.0);
 #pragma omp parallel for//一步加速
-				for (int k = 0; k < layers[L - 1].neurons.size(); k++)//循环L-1每一个神经元
+				for (int j = 0; j < layers[L].neurons.size(); j++)//循环L每一个神经元
 				{
-					for (int j = 0; j < layers[L].neurons.size(); j++)//循环L每一个神经元
+					for (int k = 0; k < layers[L - 1].neurons.size(); k++)//循环L-1每一个神经元
 					{
-						d_Wjk[j][k] = Figue_d_w(L, j, k);
+						d_Wjk[L][j][k] += Figue_d_w(L, j, k);//累加当前样本的δ权值
 
 						d_H[bjH ^ 1][k] += Figue_d_H(L, j, k);
 					}
-
+					d_P[L][j] += d_H[bjH][j];//累加当前样本的δ偏置
 				}
+				
+				bjH ^= 1;
+			}
+			samples++;//处理样本数+1
+		}
+
+		void End_training()
+		{
+			if (!if_training)Send_error("is no training");
+			if_training = false;
+			for (int L = layers.size() - 1; L > 0; L--)//循环层，L层即当前处理层
+			{
 				for (int j = 0; j < layers[L].neurons.size(); j++)//循环L每一个神经元
 				{
 					for (int k = 0; k < layers[L - 1].neurons.size(); k++)//循环L-1每一个神经元
 					{
 						//更新L层的W
-						layers[L].neurons[j].w[k] -= learning_rate * d_Wjk[j][k];
+						layers[L].neurons[j].w[k] -= learning_rate * d_Wjk[L][j][k] / (double)samples;
 					}
 					//更新L层的P(由公式可推知δPj=δHj，所以就可以很好偷懒)
-					layers[L].neurons[j].p -= learning_rate * d_H[bjH][j];
+					layers[L].neurons[j].p -= learning_rate * d_P[L][j] / (double)samples;
 				}
-				
-				bjH ^= 1;
 			}
 		}
 		//========================================================Math=========================================================
@@ -262,64 +291,62 @@ namespace Nerve
 			return d_H[bjH][j] * layers[L].neurons[j].w[k] *
 				(1 - layers[L - 1].neurons[k].out)*layers[L - 1].neurons[k].out;
 		}
+		void Send_error(char *info) 
+		{
+			MessageBox(NULL, info, "class Nerve_net", MB_OK);
+		}
 	private:
 		vector<Layer>			layers;
 		vector<double>			desired_ouput;
-		double					learning_rate = 0.2;
+		double					learning_rate = 0.5;
+		int						samples;//一次训练的样本数
+		bool					if_training;//是否正在训练中
 
 		vector<double>			d_H[2];	//Train过程中处理层和将处理层的偏导δH
 		short					bjH = 0;//标记当前d_H使用的是哪一个
-		vector<vector<double>>	d_Wjk;	//learn过程处理层的所有权值偏导
+		vector<vector<vector<double>>>	d_Wjk;	//learn过程所有权值偏导
+		vector<vector<double>>			d_P;	//learn过程所有偏置偏导
 	};
 }
 using namespace Nerve;
 
-//int main()
+//int main()//a simple example
 //{
-//	//Nerve_net net(4, 3, vector<int>{3,4});
-//	Nerve_net net("a.nerve");//从文件读入
-//	
-//	int o = 30000;
-//	default_random_engine e(GetTickCount());/*初始化随机引擎*/
-//	uniform_int_distribution<int> u(0,2);
+//	Nerve_net net(4, 3, vector<int>{3,4});
+//	//Nerve_net net("a.nerve");//从文件读入
+//	int o = 60000;
 //	while (o--)
 //	{
-//		if (u(e) == 0)
-//		{
-//			net.Input(vector<double>{1, 1, 0, 0});
-//			net.Set_Desired_output(vector<double>{1, 0, 0});
-//			net.Figue();
-//			net.Train();
-//		}
-//		else if (u(e) == 1)
-//		{
-//			net.Input(vector<double>{0, 1, 1, 0});
-//			net.Set_Desired_output(vector<double>{0, 1, 0});
-//			net.Figue();
-//			net.Train();
-//		}
-//		else
-//		{
-//			net.Input(vector<double>{0, 0, 1, 1});
-//			net.Set_Desired_output(vector<double>{0, 0, 1});
-//			net.Figue();
-//			net.Train();
-//		}
+//		net.Began_training();								//① 
 //
-//		net.Input(vector<double>{1, 1, 1, 1});
-//		net.Set_Desired_output(vector<double>{1, 1, 1});
+//		net.Input(vector<double>{1, 1, 0, 0});				//②
+//		net.Set_Desired_output(vector<double>{1, 0, 0});	//③
+//		net.Figue();										//④
+//		net.Learn();										//⑤
+//
+//		net.Input(vector<double>{0, 1, 1, 0});
+//		net.Set_Desired_output(vector<double>{0, 1, 0});
 //		net.Figue();
-//		net.Train();
+//		net.Learn();
+//
+//		net.Input(vector<double>{0, 0, 1, 1});
+//		net.Set_Desired_output(vector<double>{0, 0, 1});
+//		net.Figue();
+//		net.Learn();
+//
+//		net.End_training();									//⑥
 //
 //	}
 //	//教会它识别01
-//	net.Input(vector<double>{1,0.5,0,0.0});
+//	net.Input(vector<double>{1, 1, 0, 0.0});
 //	net.Figue();
 //	vector<double> oo = net.Output();
 //	for (int i = 0; i < oo.size(); i++)
 //		std::cout << oo[i] << " ";
+//
 //	std::cout << endl;
-//	net.Input(vector<double>{0,0.60,1.0,0.00});
+//
+//	net.Input(vector<double>{0.0,0.00,1.0,0.41});
 //	net.Figue();
 //	vector<double> ooo = net.Output();
 //	for (int i = 0; i < ooo.size(); i++)
